@@ -10,8 +10,6 @@ const app = express();
 // Dynamic port for Railway/Render
 const PORT = process.env.PORT || 5000;
 
-// ─── Middleware ────────────────────────────────────────────────────────────────
-
 // ✅ Allow ALL origins (for testing)
 app.use(cors({
 origin: true,
