@@ -1,8 +1,13 @@
+import { useNavigate } from 'react-router';
 import { getUser } from '../../api/client';
 
 export function GreetingBanner() {
   const user = getUser();
+  const navigate = useNavigate();
   const firstName = user?.name?.split(' ')[0] || 'HR';
+
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   return (
     <div
@@ -23,12 +28,13 @@ export function GreetingBanner() {
 
       <div className="relative z-10">
         <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2 }}>
-          Good morning, {firstName} 👋
+          {greeting}, {firstName} 👋
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '13px', marginTop: '6px', fontWeight: 500 }}>
           You have pending approvals and alerts requiring your attention today.
         </p>
         <button
+          onClick={() => navigate('/hr/approvals')}
           className="mt-4 px-5 py-2.5 rounded-[10px] transition-all duration-200"
           style={{
             background: 'rgba(255,255,255,0.2)',
@@ -54,8 +60,8 @@ export function GreetingBanner() {
 
       <div className="flex gap-5 relative z-10">
         {[
-          { value: '7', label: 'Pending' },
-          { value: '3', label: 'Alerts' },
+          { value: '7',   label: 'Pending'   },
+          { value: '3',   label: 'Alerts'    },
           { value: '512', label: 'Employees' },
         ].map((stat, idx) => (
           <div

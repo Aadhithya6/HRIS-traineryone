@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Check, X, Users, Flame, UserCheck, BarChart3, Lightbulb, UserX, Clock, Home, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import { leaveApi, LeaveRequest } from '../../api/client';
 
 export function ActionZone() {
+  const navigate = useNavigate();
   const [approvals, setApprovals]     = useState<LeaveRequest[]>([]);
   const [loading, setLoading]         = useState(true);
   const [error, setError]             = useState('');
@@ -68,7 +70,7 @@ export function ActionZone() {
               <span className="ml-1 text-[12px] font-[700] bg-[#EB5757] text-white px-2 py-0.5 rounded-full">{approvals.length}</span>
             )}
           </div>
-          <a className="text-[12px] text-[#2F80ED] cursor-pointer hover:underline font-[600]">View All</a>
+          <button onClick={() => navigate('/manager/approvals')} className="text-[12px] text-[#2F80ED] cursor-pointer hover:underline font-[600] bg-transparent border-0 p-0">View All</button>
         </div>
 
         {loading && (

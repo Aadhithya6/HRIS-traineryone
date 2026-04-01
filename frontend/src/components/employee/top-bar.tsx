@@ -1,11 +1,15 @@
 import { Clock, Activity } from 'lucide-react';
 import { NotificationsBell } from './notifications-bell';
+import { getUser } from '../../api/client';
 
 interface TopBarProps {
   currentTime: Date;
 }
 
 export function TopBar({ currentTime }: TopBarProps) {
+  const user = getUser();
+  const firstName = user?.name?.split(' ')[0] || 'there';
+
   const formatTime = (date: Date) => {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -18,6 +22,13 @@ export function TopBar({ currentTime }: TopBarProps) {
     return `${days[date.getDay()]}, ${String(date.getDate()).padStart(2, '0')} ${months[date.getMonth()]} ${date.getFullYear()}`;
   };
 
+  const getGreeting = () => {
+    const hour = currentTime.getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_auto] gap-5 items-start animate-[fadeUp_0.5s_ease_both]">
       {/* Greeting Block */}
@@ -26,7 +37,7 @@ export function TopBar({ currentTime }: TopBarProps) {
           Welcome back
         </span>
         <h1 className="text-5xl font-extrabold leading-tight bg-gradient-to-r from-[#2F80ED] to-[#56CCF2] bg-clip-text text-transparent">
-          Good Morning, Arjun!
+          {getGreeting()}, {firstName}!
         </h1>
         <p className="text-base text-muted-foreground mt-1">
           Here's what's happening in your workspace today.

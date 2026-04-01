@@ -1,21 +1,20 @@
 import {
   Home, Calendar, Umbrella, DollarSign, FileText, Users, Settings, Bell, HelpCircle, LogOut, Building2,
 } from 'lucide-react';
-import { useState } from 'react';
+import { NavLink } from 'react-router';
 import { logout, getUser } from '../../api/client';
 
 export function Sidebar() {
-  const [activeItem, setActiveItem] = useState('Dashboard');
   const user = getUser();
 
   const navItems = [
-    { name: 'Dashboard',  icon: Home       },
-    { name: 'Attendance', icon: Calendar   },
-    { name: 'Leave',      icon: Umbrella   },
-    { name: 'Payroll',    icon: DollarSign },
-    { name: 'Documents',  icon: FileText   },
-    { name: 'Team',       icon: Users      },
-    { name: 'Settings',   icon: Settings   },
+    { name: 'Dashboard',  icon: Home,        to: '/employee'            },
+    { name: 'Attendance', icon: Calendar,    to: '/employee/attendance' },
+    { name: 'Leave',      icon: Umbrella,    to: '/employee/leave'      },
+    { name: 'Payroll',    icon: DollarSign,  to: '/employee/payroll'    },
+    { name: 'Documents',  icon: FileText,    to: '/employee/documents'  },
+    { name: 'Team',       icon: Users,       to: '/employee/team'       },
+    { name: 'Settings',   icon: Settings,    to: '/employee/settings'   },
   ];
 
   const initials = user?.name
@@ -52,20 +51,26 @@ export function Sidebar() {
         <nav className="space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = activeItem === item.name;
             return (
-              <button
+              <NavLink
                 key={item.name}
-                onClick={() => setActiveItem(item.name)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#2F80ED] to-[#56CCF2] text-white shadow-lg shadow-[#2F80ED]/30'
-                    : 'text-gray-300 hover:bg-[#1F2937] hover:text-white'
-                }`}
+                to={item.to}
+                end={item.to === '/employee'}
+                className={({ isActive }) =>
+                  `w-full flex items-center gap-3 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#2F80ED] to-[#56CCF2] text-white shadow-lg shadow-[#2F80ED]/30'
+                      : 'text-gray-300 hover:bg-[#1F2937] hover:text-white'
+                  }`
+                }
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-400'}`} />
-                <span>{item.name}</span>
-              </button>
+                {({ isActive }) => (
+                  <>
+                    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                    <span>{item.name}</span>
+                  </>
+                )}
+              </NavLink>
             );
           })}
         </nav>

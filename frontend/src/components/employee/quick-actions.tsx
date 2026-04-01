@@ -1,10 +1,13 @@
 import { Palmtree, MapPin, DollarSign, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 interface QuickActionsProps {
   onApplyLeave?: () => void;
 }
 
 export function QuickActions({ onApplyLeave }: QuickActionsProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] gap-4 animate-[fadeUp_0.6s_ease_both] [animation-delay:0.1s]">
       {/* Apply for Leave */}
@@ -30,7 +33,10 @@ export function QuickActions({ onApplyLeave }: QuickActionsProps) {
       </div>
 
       {/* Check-In */}
-      <div className="relative bg-gradient-to-br from-[#ECFDF5] to-[#D1FAE5] border-2 border-[#27AE60]/20 rounded-2xl p-6 cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:shadow-[#27AE60]/10 hover:border-[#27AE60]/40 transition-all">
+      <div
+        onClick={() => navigate('/employee/attendance')}
+        className="relative bg-gradient-to-br from-[#ECFDF5] to-[#D1FAE5] border-2 border-[#27AE60]/20 rounded-2xl p-6 cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:shadow-[#27AE60]/10 hover:border-[#27AE60]/40 transition-all"
+      >
         <div className="w-14 h-14 bg-[#27AE60] rounded-xl flex items-center justify-center mb-3 shadow-md shadow-[#27AE60]/20">
           <MapPin className="w-7 h-7 text-white" />
         </div>
@@ -42,7 +48,10 @@ export function QuickActions({ onApplyLeave }: QuickActionsProps) {
       </div>
 
       {/* Payslip */}
-      <div className="relative bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] border-2 border-[#F2C94C]/20 rounded-2xl p-6 cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:shadow-[#F2C94C]/10 hover:border-[#F2C94C]/40 transition-all">
+      <div
+        onClick={() => navigate('/employee/payroll')}
+        className="relative bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] border-2 border-[#F2C94C]/20 rounded-2xl p-6 cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:shadow-[#F2C94C]/10 hover:border-[#F2C94C]/40 transition-all"
+      >
         <div className="w-14 h-14 bg-[#F2C94C] rounded-xl flex items-center justify-center mb-3 shadow-md shadow-[#F2C94C]/20">
           <DollarSign className="w-7 h-7 text-white" />
         </div>

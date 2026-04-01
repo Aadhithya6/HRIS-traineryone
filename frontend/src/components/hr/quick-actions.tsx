@@ -1,14 +1,17 @@
 import { CheckCheck, DollarSign, Plus, Edit, FileText } from 'lucide-react';
-
-const actions = [
-  { icon: CheckCheck, label: 'Approve Requests', primary: true },
-  { icon: DollarSign, label: 'Run Payroll' },
-  { icon: Plus, label: 'Add Employee' },
-  { icon: Edit, label: 'Post Job' },
-  { icon: FileText, label: 'Generate Report' },
-];
+import { useNavigate } from 'react-router';
 
 export function QuickActions() {
+  const navigate = useNavigate();
+
+  const actions = [
+    { icon: CheckCheck, label: 'Approve Requests', primary: true,  to: '/hr/approvals'   },
+    { icon: DollarSign, label: 'Run Payroll',       primary: false, to: '/hr/payroll'     },
+    { icon: Plus,       label: 'Add Employee',      primary: false, to: '/hr/employees'   },
+    { icon: Edit,       label: 'Post Job',           primary: false, to: '/hr/recruitment' },
+    { icon: FileText,   label: 'Generate Report',   primary: false, to: '/hr/reports'     },
+  ];
+
   return (
     <div>
       <div
@@ -18,11 +21,12 @@ export function QuickActions() {
         Quick Actions
       </div>
       <div className="flex gap-2.5 flex-wrap">
-        {actions.map((action, idx) => {
+        {actions.map((action) => {
           const Icon = action.icon;
           return (
             <button
-              key={idx}
+              key={action.label}
+              onClick={() => navigate(action.to)}
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl border-[1.5px] transition-all whitespace-nowrap"
               style={{
                 background: action.primary ? 'var(--hris-primary)' : '#FFFFFF',

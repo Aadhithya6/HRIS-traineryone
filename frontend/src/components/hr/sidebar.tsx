@@ -1,26 +1,25 @@
-import { useState } from 'react';
 import { LayoutGrid, Users, Calendar, DollarSign, MapPin, BarChart3, TrendingUp, Settings, LogOut } from 'lucide-react';
+import { NavLink } from 'react-router';
 import { getUser, logout } from '../../api/client';
 
 const navSections = [
   { section: 'Main', items: [
-    { icon: LayoutGrid, label: 'Dashboard', active: true },
-    { icon: Users, label: 'Employees' },
-    { icon: Calendar, label: 'Leave', badge: 4, badgeColor: 'danger' },
-    { icon: DollarSign, label: 'Payroll' },
-    { icon: MapPin, label: 'Recruitment', badge: 5, badgeColor: 'blue' },
+    { icon: LayoutGrid, label: 'Dashboard',   to: '/hr',               end: true  },
+    { icon: Users,      label: 'Employees',   to: '/hr/employees'                 },
+    { icon: Calendar,   label: 'Leave',       to: '/hr/leave',         badge: 4,  badgeColor: 'danger' },
+    { icon: DollarSign, label: 'Payroll',     to: '/hr/payroll'                   },
+    { icon: MapPin,     label: 'Recruitment', to: '/hr/recruitment',   badge: 5,  badgeColor: 'blue'   },
   ]},
   { section: 'Analytics', items: [
-    { icon: BarChart3, label: 'Reports' },
-    { icon: TrendingUp, label: 'Analytics' },
+    { icon: BarChart3,  label: 'Reports',     to: '/hr/reports'   },
+    { icon: TrendingUp, label: 'Analytics',   to: '/hr/analytics' },
   ]},
   { section: 'System', items: [
-    { icon: Settings, label: 'Settings' },
+    { icon: Settings,   label: 'Settings',    to: '/hr/settings'  },
   ]},
 ];
 
 export function Sidebar() {
-  const [activeLabel, setActiveLabel] = useState('Dashboard');
   const user = getUser();
 
   const initials = user?.name
@@ -60,15 +59,15 @@ export function Sidebar() {
             >
               {section.section}
             </div>
-            {section.items.map((item, itemIdx) => {
+            {section.items.map((item) => {
               const Icon = item.icon;
-              const isActive = activeLabel === item.label;
               return (
-                <button
-                  key={itemIdx}
-                  onClick={() => setActiveLabel(item.label)}
-                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-[10px] mb-0.5 transition-all duration-200 relative"
-                  style={{
+                <NavLink
+                  key={item.label}
+                  to={item.to}
+                  end={item.end}
+                  className="w-full flex items-center gap-2.5 py-2.5 rounded-[10px] mb-0.5 transition-all duration-200 relative"
+                  style={({ isActive }) => ({
                     background: isActive ? 'rgba(47,128,237,0.12)' : 'transparent',
                     color: isActive ? 'var(--hris-sidebar-text)' : 'var(--hris-sidebar-text-inactive)',
                     fontSize: '13px',
@@ -76,17 +75,22 @@ export function Sidebar() {
                     borderLeft: isActive ? '3px solid var(--hris-primary)' : '3px solid transparent',
                     marginLeft: '-12px',
                     paddingLeft: '21px',
-                  }}
+                    paddingRight: '12px',
+                    display: 'flex',
+                    textDecoration: 'none',
+                  })}
                   onMouseEnter={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = 'var(--hris-sidebar-hover)';
-                      e.currentTarget.style.color = 'var(--hris-sidebar-text)';
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    if (!el.style.borderLeft.includes('var(--hris-primary)') || el.style.borderLeft.includes('transparent')) {
+                      el.style.background = 'var(--hris-sidebar-hover)';
+                      el.style.color = 'var(--hris-sidebar-text)';
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.background = 'transparent';
-                      e.currentTarget.style.color = 'var(--hris-sidebar-text-inactive)';
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    if (!el.classList.contains('active')) {
+                      el.style.background = 'transparent';
+                      el.style.color = 'var(--hris-sidebar-text-inactive)';
                     }
                   }}
                 >
@@ -105,7 +109,7 @@ export function Sidebar() {
                       {item.badge}
                     </span>
                   )}
-                </button>
+                </NavLink>
               );
             })}
           </div>
@@ -114,9 +118,7 @@ export function Sidebar() {
 
       {/* User Card + Logout */}
       <div className="mt-auto p-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-        <div
-          className="flex items-center gap-2.5 px-3 py-2.5 rounded-[10px]"
-        >
+        <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-[10px]">
           <div
             className="w-[34px] h-[34px] rounded-full flex items-center justify-center shrink-0"
             style={{ background: 'linear-gradient(135deg, var(--hris-gradient-from), var(--hris-gradient-to))', color: '#fff', fontWeight: 700, fontSize: '12px' }}
